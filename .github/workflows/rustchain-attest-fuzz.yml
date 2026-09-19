@@ -1,0 +1,112 @@
+name: RustChain attest fuzz report
+
+on:
+  push:
+    paths:
+      - '.github/workflows/rustchain-attest-fuzz.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Run bounded authorized fuzzing
+        shell: python
+        run: |
+          import json, ssl, time, urllib.request, urllib.error
+          from collections import Counter, defaultdict
+
+          URL = "https://50.28.86.131/attest/submit"
+          ctx = ssl._create_unverified_context()
+
+          cases = []
+
+          # Missing/partial fields (25)
+          base_fields = ["miner_id","nonce","timestamp","fingerprint","signature"]
+          for i in range(25):
+              d = {k: f"test-{k}" for k in base_fields}
+              for k in base_fields[: (i % len(base_fields)) + 1]:
+                  d.pop(k, None)
+              cases.append(("missing_fields", d))
+
+          # Wrong types (25)
+          vals = [None, True, False, 0, -1, 1.5, [], {}, ["x"], {"x":1}]
+          for i in range(25):
+              d = {k: f"test-{k}" for k in base_fields}
+              k = base_fields[i % len(base_fields)]
+              d[k] = vals[i % len(vals)]
+              cases.append(("wrong_types", d))
+
+          # Oversized but bounded inputs (25); max 16 KiB per field, 100 requests total.
+          sizes = [1024, 2048, 4096, 8192, 16384]
+          for i in range(25):
+              d = {k: f"test-{k}" for k in base_fields}
+              k = base_fields[i % len(base_fields)]
+              d[k] = "A" * sizes[i % len(sizes)]
+              cases.append(("oversized_inputs", d))
+
+          # Basic non-destructive injection-style strings (25)
+          payloads = [
+              "' OR '1'='1", "" OR "1"="1", "<script>alert(1)</script>",
+              "{{7*7}}", "49", "../" * 8, "%00", "\\x00", "null",
+              "1e309", "NaN", "Infinity", "[]", "{}", "$(id)",
+              ";SELECT 1;", " UNION SELECT 1--", "';--", "\";--",
+              "%27%20OR%201%3D1", "a\nb\rc", "\u0000", "💥"*64, "A"*512, "0"*1024
+          ]
+          for i, p in enumerate(payloads):
+              d = {k: f"test-{k}" for k in base_fields}
+              d[base_fields[i % len(base_fields)]] = p
+              cases.append(("injection_style", d))
+
+          assert len(cases) == 100
+
+          results = []
+          for idx, (category, payload) in enumerate(cases, 1):
+              data = json.dumps(payload).encode()
+              req = urllib.request.Request(
+                  URL, data=data, method="POST",
+                  headers={"Content-Type":"application/json","User-Agent":"fsalmon1991-authorized-bounty-fuzzer/1.0"}
+              )
+              status = None
+              body = ""
+              err = None
+              started = time.time()
+              try:
+                  with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
+                      status = resp.status
+                      body = resp.read(2048).decode("utf-8","replace")
+              except urllib.error.HTTPError as e:
+                  status = e.code
+                  body = e.read(2048).decode("utf-8","replace")
+              except Exception as e:
+                  err = f"{type(e).__name__}: {e}"
+              elapsed_ms = round((time.time()-started)*1000, 1)
+              results.append({
+                  "n": idx, "category": category, "status": status,
+                  "elapsed_ms": elapsed_ms, "error": err,
+                  "body_prefix": body[:240].replace("\n"," ")
+              })
+              time.sleep(0.25)
+
+          counts = Counter(str(r["status"]) if r["status"] is not None else "transport_error" for r in results)
+          by_cat = defaultdict(Counter)
+          for r in results:
+              by_cat[r["category"]][str(r["status"]) if r["status"] is not None else "transport_error"] += 1
+
+          print("=== FUZZ SUMMARY ===")
+          print("total", len(results))
+          print("status_counts", json.dumps(dict(counts), sort_keys=True))
+          print("category_counts", json.dumps({k:dict(v) for k,v in by_cat.items()}, sort_keys=True))
+          print("server_5xx", sum(1 for r in results if r["status"] and 500 <= r["status"] < 600))
+          print("transport_errors", sum(1 for r in results if r["error"]))
+          print("=== NOTABLE CASES ===")
+          for r in results:
+              if r["error"] or (r["status"] and r["status"] >= 500):
+                  print(json.dumps(r, ensure_ascii=False))
+          print("=== SAMPLE FIRST 20 ===")
+          for r in results[:20]:
+              print(json.dumps(r, ensure_ascii=False))
