@@ -22,18 +22,15 @@ jobs:
 
           URL = "https://50.28.86.131/attest/submit"
           ctx = ssl._create_unverified_context()
-
           cases = []
-
-          # Missing/partial fields (25)
           base_fields = ["miner_id","nonce","timestamp","fingerprint","signature"]
+
           for i in range(25):
               d = {k: f"test-{k}" for k in base_fields}
               for k in base_fields[: (i % len(base_fields)) + 1]:
                   d.pop(k, None)
               cases.append(("missing_fields", d))
 
-          # Wrong types (25)
           vals = [None, True, False, 0, -1, 1.5, [], {}, ["x"], {"x":1}]
           for i in range(25):
               d = {k: f"test-{k}" for k in base_fields}
@@ -41,7 +38,6 @@ jobs:
               d[k] = vals[i % len(vals)]
               cases.append(("wrong_types", d))
 
-          # Oversized but bounded inputs (25); max 16 KiB per field, 100 requests total.
           sizes = [1024, 2048, 4096, 8192, 16384]
           for i in range(25):
               d = {k: f"test-{k}" for k in base_fields}
@@ -49,13 +45,32 @@ jobs:
               d[k] = "A" * sizes[i % len(sizes)]
               cases.append(("oversized_inputs", d))
 
-          # Basic non-destructive injection-style strings (25)
           payloads = [
-              "' OR '1'='1", "" OR "1"="1", "<script>alert(1)</script>",
-              "{{7*7}}", "49", "../" * 8, "%00", "\\x00", "null",
-              "1e309", "NaN", "Infinity", "[]", "{}", "$(id)",
-              ";SELECT 1;", " UNION SELECT 1--", "';--", "\";--",
-              "%27%20OR%201%3D1", "a\nb\rc", "\u0000", "💥"*64, "A"*512, "0"*1024
+              "' OR '1'='1",
+              '" OR "1"="1',
+              "<script>alert(1)</script>",
+              "{{7*7}}",
+              "${7*7}",
+              "../" * 8,
+              "%00",
+              "\\x00",
+              "null",
+              "1e309",
+              "NaN",
+              "Infinity",
+              "[]",
+              "{}",
+              "$(id)",
+              ";SELECT 1;",
+              " UNION SELECT 1--",
+              "';--",
+              '\";--',
+              "%27%20OR%201%3D1",
+              "a\\nb\\rc",
+              "\\u0000",
+              "💥"*64,
+              "A"*512,
+              "0"*1024
           ]
           for i, p in enumerate(payloads):
               d = {k: f"test-{k}" for k in base_fields}
