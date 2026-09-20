@@ -1,0 +1,19 @@
+{
+  "set": "RustChain Arena announcer voice lines",
+  "generator": "eSpeak + ffmpeg, local/offline",
+  "sample_rate_hz": 48000,
+  "channels": 1,
+  "codec": "Ogg Vorbis",
+  "license": "GPL-3.0-or-later",
+  "files": [
+    {"file":"double_spend.ogg","line":"Double spend!","sha256":"851d13a8deb3b9ca6a775b1e789d0c9ba4534fae6e977faba6adb43d2e7aedec"},
+    {"file":"triple_fork.ogg","line":"Triple fork!","sha256":"47b8f2b08be2e8b2e78ac7821a0ff00474d48e28b273817e8c121e2ea187cc43"},
+    {"file":"consensus_reached.ogg","line":"Consensus reached!","sha256":"f62d75226a4116bdb38bcd9fb1c6318eba4b6bb10b34035df367296b5df9e317"},
+    {"file":"calculating.ogg","line":"Calculating...","sha256":"7e936ab64a1871d9090509e902a9d43f14cdb62aaa02d04957e80ddcf31afcd2"},
+    {"file":"building_momentum.ogg","line":"Building momentum!","sha256":"c99c0edda051ea686f0a77e717559a1b5eb6db423c93e54270fe8b63e1d4c167"},
+    {"file":"singularity.ogg","line":"Singularity!","sha256":"078f483d298ecf2f7cdb6bced1ffe698a36b3e8e039a6357efbb4468a2cb9ba5"},
+    {"file":"block_confirmed.ogg","line":"Block confirmed!","sha256":"2bdd86db074cde26c40d4c44c4775f5fdeeb6f6b4f2017f9bd74d9f62ed6af06"},
+    {"file":"chain_reorganization.ogg","line":"Chain reorganization!","sha256":"3e50c882a51619e7bf127985da310bcbbf34c08e011eaaa03322212c7895effa"},
+    {"file":"attack_51_detected.ogg","line":"Fifty one percent attack detected!","sha256":"fbf5de18d5b00601d62407ecfc5c55d0653d5b70f899410dbd53cafbe25cbe89"}
+  ]
+}
