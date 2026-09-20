@@ -1,0 +1,7 @@
+A migration path also needs a safe way back. RustChain’s genesis rollback is deliberately fail-closed. It requires an administrator key configured through `RC_ADMIN_KEY`, uses a constant-time key comparison, and refuses rollback if non-genesis UTXO state exists.
+
+Before deleting genesis state, it identifies dependent boxes and evicts mempool transactions that rely on them. It also cleans mirror provenance that no longer backs a live box.
+
+That is the broader lesson in this code: a ledger migration is not just a converter. It is a protocol for preserving ownership while two representations overlap. Deterministic construction tells every node what the new state should be. Provenance says where mirrored value came from. Atomic application controls how state changes. Integrity checks expose divergence. And rollback rules prevent “undo” from becoming a second corruption path.
+
+The implementation reviewed for this production kit is pinned in the sources, so every technical claim can be checked against the exact code revision used here.

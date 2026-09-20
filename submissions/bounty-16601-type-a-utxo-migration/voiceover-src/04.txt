@@ -1,0 +1,9 @@
+Once value is in the UTXO set, a transfer is handled as a state transition, not as a sequence of independent balance edits.
+
+`apply_transaction` validates the input shape, rejects duplicate input box IDs, verifies that regular inputs exist and are still unspent, validates read-only data inputs, and enforces conservation for normal transfers: outputs plus fee must equal the consumed input value.
+
+The code then derives the transaction identity from the normalized transaction intent, computes deterministic output box IDs, marks inputs spent, creates outputs, and records the transaction.
+
+When the UTXO database owns the transaction, it opens a SQLite `BEGIN IMMEDIATE` transaction. If validation fails, it aborts. If the state transition succeeds, it commits. The layer also tracks mempool input claims so two pending transactions cannot casually reserve the same box.
+
+This is the key migration idea: the new model is not safe because it has UTXOs. It is safe only if consuming old state and creating new state happens as one coherent transition.

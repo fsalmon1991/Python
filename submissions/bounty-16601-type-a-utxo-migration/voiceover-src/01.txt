@@ -1,0 +1,5 @@
+A blockchain can change its code. The hard part is changing its accounting model without accidentally changing who owns what.
+
+RustChain is moving from an account-style balance system toward a UTXO model. That sounds like a database refactor, but it is actually a state-conservation problem. If old balances and new UTXO boxes are both spendable at the same time, one unit of value can exist in two spend paths. If migration output depends on local timing or row order, different nodes can build different state roots from the same balances.
+
+The interesting part of RustChain’s migration code is not that it creates UTXOs. It is the set of rules around creation: deterministic snapshotting, explicit provenance, atomic state transitions, and integrity checks that make the old and new representations agree.

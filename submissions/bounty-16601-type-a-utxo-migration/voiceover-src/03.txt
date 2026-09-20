@@ -1,0 +1,7 @@
+During the transition, RustChain’s UTXO layer can run beside the account-based system in dual-write mode. That creates a subtle risk: matching global totals are not enough to prove that the same value cannot be spent through both models.
+
+RustChain records account-backed UTXO boxes in an `account_mirror_boxes` table. Each entry links a box ID to the account wallet, its value, and the epoch when the mirrored value was created.
+
+This provenance is more useful than a loose metadata tag. It gives later reconciliation code an explicit answer to the question: which UTXO boxes represent value that also exists in the account model?
+
+The integrity checker goes further than comparing one network-wide sum. It checks mirror provenance per wallet and fails if a wallet’s unspent mirrored UTXO value exceeds the corresponding account balance. That catches a class of divergence that a total-only comparison could hide.

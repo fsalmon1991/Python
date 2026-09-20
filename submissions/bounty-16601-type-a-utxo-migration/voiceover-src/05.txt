@@ -1,0 +1,5 @@
+RustChain computes a deterministic Merkle-style state root over unspent boxes. Boxes are ordered by box ID. The leaf hash commits to the box contents and the number of leaves, and odd tree layers use a domain-separated padding hash instead of blindly duplicating the last leaf.
+
+The result is a compact fingerprint of the current unspent set. If two nodes believe they have the same state but produce different roots, the difference is observable.
+
+The migration uses the same idea in dry-run mode: it hashes the preview boxes in memory. After a real migration, the integrity check compares the UTXO total with the account snapshot and also runs the per-wallet mirror-provenance check.

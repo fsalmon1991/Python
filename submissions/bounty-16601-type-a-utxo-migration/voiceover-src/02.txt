@@ -1,0 +1,7 @@
+The migration starts from non-zero account balances. Those balances are read in miner-ID order, and the code converts the account model’s micro-RTC units into the UTXO model’s nano-RTC units. In the UTXO layer, one RTC is represented as one hundred million nano-RTC.
+
+For every non-zero wallet, the migration creates one genesis box. Its transaction ID is deterministic: SHA-256 of the fixed prefix `rustchain_genesis:` plus the miner ID. The box ID is also derived deterministically from value, proposition, creation height, transaction ID, and output index.
+
+That matters because the migration is not supposed to invent a different genesis state on each machine. Given the same balance snapshot, nodes should derive the same boxes and the same state root.
+
+The migration also refuses to run over an already-migrated genesis or over existing non-genesis UTXO state. A dry run is observational: it opens the database read-only and computes the boxes it would create instead of quietly initializing or modifying the target.
