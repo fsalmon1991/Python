@@ -1,0 +1,33 @@
+name: RustChain bounty 2271 dry-run
+
+on:
+  push:
+    branches:
+      - bounty-2271-dryrun
+
+jobs:
+  dryrun:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Environment
+        run: |
+          echo "UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          uname -a
+          lscpu | sed -n '1,20p'
+          free -h
+      - name: Fetch current RustChain source
+        run: |
+          git clone --depth 1 https://github.com/Scottcjn/Rustchain.git rustchain
+          cd rustchain
+          echo "RUSTCHAIN_SHA=$(git rev-parse HEAD)"
+      - name: Install runtime dependencies
+        run: python -m pip install --disable-pip-version-check requests pynacl
+      - name: Run miner dry-run
+        run: |
+          cd rustchain
+          python3 miners/linux/rustchain_linux_miner.py \
+            --dry-run \
+            --show-payload \
+            --verbose \
+            --wallet RTC7f216de84caae4f0fb1bddf3f22e08f76e06bd63
