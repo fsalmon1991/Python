@@ -1,0 +1,52 @@
+name: Build RustChain Type A bounty package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/build_bounty16601_typea.py'
+      - '.github/workflows/build-bounty16601-typea.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install media tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y espeak ffmpeg fonts-dejavu-core
+          python -m pip install --upgrade pillow
+
+      - name: Generate package
+        run: python tools/build_bounty16601_typea.py
+
+      - name: Validate required files
+        run: |
+          test -f submissions/bounty-16601-type-a-utxo-migration/script.md
+          test -f submissions/bounty-16601-type-a-utxo-migration/assembly.md
+          test -f submissions/bounty-16601-type-a-utxo-migration/metadata.md
+          test -f submissions/bounty-16601-type-a-utxo-migration/SOURCES.md
+          test -f submissions/bounty-16601-type-a-utxo-migration/thumbnail.png
+          test -f submissions/bounty-16601-type-a-utxo-migration/thumbnail-alt-1.png
+          test -f submissions/bounty-16601-type-a-utxo-migration/thumbnail-alt-2.png
+          test "$(find submissions/bounty-16601-type-a-utxo-migration/voiceover -name '*.mp3' | wc -l)" -eq 6
+          grep -q 'Audio duration is within' submissions/bounty-16601-type-a-utxo-migration/QA.md
+
+      - name: Commit generated package
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add submissions/bounty-16601-type-a-utxo-migration
+          if git diff --cached --quiet; then
+            echo 'No generated changes.'
+            exit 0
+          fi
+          git commit -m 'Build RustChain Type A UTXO migration production kit [skip ci]'
+          git push
