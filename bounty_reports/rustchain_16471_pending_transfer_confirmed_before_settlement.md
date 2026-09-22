@@ -4,7 +4,7 @@
 **Reporter:** `@fsalmon1991`  
 **Canonical RTC payout wallet:** `RTC7f216de84caae4f0fb1bddf3f22e08f76e06bd63`  
 **Requested assessment:** 35 RTC base audit if this is the first valid non-duplicate finding from this claimant; otherwise apply the bounty's applicable increment.  
-**Testing:** source/state-machine analysis only. No production transfer was attempted.
+**Testing:** public-source review plus deterministic state-machine reproduction. No production transfer was attempted.
 
 ## Summary
 
@@ -39,7 +39,24 @@ The relevant current source is:
 
 ## Deterministic state-machine reproduction
 
-No live funds are necessary to reproduce the logic:
+No live funds are necessary to reproduce the logic. A minimal model of the current branch ordering was executed with a transfer response of:
+
+```json
+{"ok": true, "phase": "pending", "confirms_in_hours": 24}
+```
+
+The observed state transition was:
+
+```text
+first run result: runner_success
+issue state: closed
+balance moved: false
+second run result: skipped_terminal_marker
+comments:
+  💸 **RTC-AutoPay-Confirmed** — payout **queued** — pending confirmation
+```
+
+Equivalent control flow:
 
 ```text
 Initial claim:
@@ -67,6 +84,8 @@ Next payout run:
 ```
 
 The failure does not require a speculative transport error. #16471 itself documents that the pending confirmer previously failed to run for an extended period; this payout-side state machine has no settlement check before recording the terminal marker and closing the claim.
+
+I also attempted to clone the public upstream repository into the isolated execution container for an import-level test, but that container has no GitHub DNS/network access. I therefore do **not** claim an upstream test-suite run. The finding is based on the current public source fetched through the authorized GitHub connection plus the deterministic branch-order reproduction above.
 
 ## Impact
 
