@@ -1,0 +1,6 @@
+script_words=625
+voiceover_sections=6
+voiceover_duration_seconds=269.79
+visuals=11 at 1920x1080 SVG
+thumbnails=3 at 1280x720 PNG
+errors=0
