@@ -1,0 +1,9 @@
+pre_fix_attacker_request: 200 OK
+pre_fix_mapping_hijacked: True
+post_fix_attacker_request: 400 PUBKEY_MISMATCH
+post_fix_mapping_preserved: True
+post_fix_legitimate_request: 200 OK
+RESULT: PASS
+
+Harness SHA-256: 22096773e459c3f14e19df911b150ac952eb46d82f7af939399f31bb486f2f77
+Output SHA-256: 41940b20940e7bde79dd099a89a83cc8fc1c70f8021e7eaaa185ae1e30e09a3c
