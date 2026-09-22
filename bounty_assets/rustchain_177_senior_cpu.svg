@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#10131c"/><stop offset="1" stop-color="#2b1b10"/></linearGradient>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity="0.35"/></filter>
+  </defs>
+  <rect width="1200" height="675" rx="28" fill="url(#bg2)"/>
+  <text x="600" y="78" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="42" font-weight="700">RUSTCHAIN HARDWARE INTERVIEW</text>
+  <text x="600" y="116" text-anchor="middle" fill="#d1d5db" font-family="Arial, sans-serif" font-size="20">Proof of Antiquity recruiting department</text>
+
+  <!-- desk -->
+  <rect x="100" y="470" width="1000" height="28" rx="10" fill="#8b5e34"/>
+  <rect x="160" y="498" width="30" height="130" fill="#654321"/><rect x="1010" y="498" width="30" height="130" fill="#654321"/>
+
+  <!-- recruiter terminal -->
+  <g filter="url(#shadow2)">
+    <rect x="165" y="180" width="350" height="235" rx="24" fill="#c9b99b" stroke="#7c6a50" stroke-width="6"/>
+    <rect x="200" y="215" width="280" height="145" rx="14" fill="#0b2f28"/>
+    <text x="340" y="267" text-anchor="middle" fill="#6ee7b7" font-family="monospace" font-size="28" font-weight="700">RustChain HR</text>
+    <text x="340" y="308" text-anchor="middle" fill="#a7f3d0" font-family="monospace" font-size="18">1 CPU = 1 vote</text>
+    <text x="340" y="337" text-anchor="middle" fill="#a7f3d0" font-family="monospace" font-size="18">age may be a feature</text>
+    <rect x="225" y="380" width="230" height="26" rx="5" fill="#ad9d80"/>
+  </g>
+
+  <!-- vintage candidate -->
+  <g filter="url(#shadow2)">
+    <rect x="760" y="205" width="245" height="270" rx="16" fill="#d8c8a8" stroke="#806f55" stroke-width="6"/>
+    <rect x="792" y="238" width="181" height="45" rx="5" fill="#97866c"/>
+    <rect x="792" y="303" width="181" height="17" rx="3" fill="#70624f"/>
+    <rect x="792" y="340" width="120" height="35" rx="3" fill="#b4a17f" stroke="#70624f" stroke-width="3"/>
+    <circle cx="958" cy="428" r="10" fill="#22c55e"/>
+    <text x="882" y="454" text-anchor="middle" fill="#5b4a33" font-family="Arial, sans-serif" font-size="18" font-weight="700">POWERPC • 2003</text>
+  </g>
+
+  <!-- speech bubbles -->
+  <g>
+    <rect x="92" y="130" width="430" height="94" rx="24" fill="#f8fafc"/>
+    <polygon points="425,214 475,244 448,205" fill="#f8fafc"/>
+    <text x="307" y="168" text-anchor="middle" fill="#111827" font-family="Arial, sans-serif" font-size="24" font-weight="700">“What year is your CPU?”</text>
+    <text x="307" y="199" text-anchor="middle" fill="#374151" font-family="Arial, sans-serif" font-size="18">Be specific.</text>
+  </g>
+  <g>
+    <rect x="690" y="120" width="360" height="82" rx="24" fill="#fde68a"/>
+    <polygon points="790,194 760,226 825,195" fill="#fde68a"/>
+    <text x="870" y="171" text-anchor="middle" fill="#422006" font-family="Arial, sans-serif" font-size="30" font-weight="700">“2003.”</text>
+  </g>
+
+  <!-- punchline -->
+  <rect x="190" y="530" width="820" height="92" rx="20" fill="#111827" stroke="#f59e0b" stroke-width="3"/>
+  <text x="600" y="573" text-anchor="middle" fill="#fbbf24" font-family="Arial, sans-serif" font-size="34" font-weight="800">RUSTCHAIN: “Excellent. You’re senior.”</text>
+  <text x="600" y="605" text-anchor="middle" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="16">Original AI-assisted artwork • RustChain bounty #177 • no price or investment claim</text>
+</svg>
