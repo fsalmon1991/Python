@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="1" stop-color="#052e2b"/>
+    </linearGradient>
+    <linearGradient id="crt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#064e3b"/>
+      <stop offset="1" stop-color="#022c22"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="675" rx="28" fill="url(#bg)"/>
+  <rect x="32" y="30" width="1136" height="530" rx="22" fill="#0b1220" stroke="#d6a15d" stroke-width="3"/>
+  <line x1="600" y1="30" x2="600" y2="560" stroke="#d6a15d" stroke-width="3"/>
+
+  <!-- left: old PC about to be retired -->
+  <text x="78" y="92" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">2026 PC:</text>
+  <text x="78" y="137" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">“Time to retire the old machine.”</text>
+  <g filter="url(#shadow)">
+    <rect x="180" y="190" width="245" height="300" rx="14" fill="#d6c5a5" stroke="#8b7355" stroke-width="6"/>
+    <rect x="212" y="230" width="181" height="42" rx="4" fill="#9a896e"/>
+    <rect x="212" y="292" width="181" height="18" rx="3" fill="#7a6b57"/>
+    <rect x="212" y="332" width="130" height="35" rx="3" fill="#b5a181" stroke="#7a6b57" stroke-width="3"/>
+    <circle cx="378" cy="449" r="11" fill="#34d399"/>
+  </g>
+  <g transform="rotate(-8 400 210)" filter="url(#shadow)">
+    <rect x="362" y="175" width="150" height="72" rx="6" fill="#fde68a"/>
+    <text x="381" y="205" fill="#422006" font-family="Arial, sans-serif" font-size="18" font-weight="700">STILL WORKS</text>
+    <text x="416" y="231" fill="#422006" font-family="Arial, sans-serif" font-size="22">:)</text>
+  </g>
+  <text x="88" y="525" fill="#94a3b8" font-family="Arial, sans-serif" font-size="22">Repair • reuse • preserve</text>
+
+  <!-- right: RustChain asks how old -->
+  <text x="650" y="92" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">RustChain:</text>
+  <text x="650" y="137" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">“How old, exactly?”</text>
+  <g filter="url(#shadow)">
+    <rect x="745" y="184" width="305" height="240" rx="24" fill="#c4b08d" stroke="#806c4f" stroke-width="7"/>
+    <rect x="780" y="218" width="235" height="155" rx="18" fill="url(#crt)" stroke="#163d32" stroke-width="5"/>
+    <text x="825" y="270" fill="#6ee7b7" font-family="monospace" font-size="32" font-weight="700">RustChain</text>
+    <text x="817" y="312" fill="#a7f3d0" font-family="monospace" font-size="21">OLD HARDWARE</text>
+    <text x="828" y="343" fill="#a7f3d0" font-family="monospace" font-size="21">EARNS MORE</text>
+    <rect x="796" y="424" width="210" height="30" rx="5" fill="#ae9876"/>
+    <g stroke="#6c5d48" stroke-width="2">
+      <line x1="815" y1="431" x2="815" y2="447"/><line x1="835" y1="431" x2="835" y2="447"/><line x1="855" y1="431" x2="855" y2="447"/><line x1="875" y1="431" x2="875" y2="447"/><line x1="895" y1="431" x2="895" y2="447"/><line x1="915" y1="431" x2="915" y2="447"/><line x1="935" y1="431" x2="935" y2="447"/><line x1="955" y1="431" x2="955" y2="447"/><line x1="975" y1="431" x2="975" y2="447"/>
+    </g>
+  </g>
+  <text x="710" y="511" fill="#fbbf24" font-family="Arial, sans-serif" font-size="24" font-weight="700">The rare upgrade where “older” can be the feature.</text>
+
+  <!-- footer -->
+  <rect x="32" y="582" width="1136" height="62" rx="14" fill="#071b22" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="600" y="613" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="23" font-weight="700">Proof of Antiquity rewards verified vintage hardware with higher multipliers.</text>
+  <text x="600" y="637" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="14">Original AI-assisted artwork • no investment or price claim • RustChain bounty #177</text>
+</svg>
