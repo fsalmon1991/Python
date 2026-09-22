@@ -1,0 +1,48 @@
+name: RustChain 293 Weapon SFX
+
+on:
+  push:
+    paths:
+      - 'bounty_packages/rustchain_293_weapon_sfx_alt/**'
+      - '.github/workflows/rustchain-293-sfx.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Generate audio
+        working-directory: bounty_packages/rustchain_293_weapon_sfx_alt
+        run: python generate_sfx.py
+      - name: Validate audio and build manifest
+        working-directory: bounty_packages/rustchain_293_weapon_sfx_alt
+        run: |
+          : > validation.txt
+          for f in audio/*.ogg; do
+            echo "== $f ==" >> validation.txt
+            ffprobe -v error -select_streams a:0 -show_entries stream=codec_name,sample_rate,channels,duration -of default=nw=1 "$f" >> validation.txt
+            ffmpeg -hide_banner -nostats -i "$f" -af astats=metadata=1:reset=0 -f null - 2>&1 | grep -E 'Peak level dB|RMS level dB' | tail -n 2 >> validation.txt || true
+            echo >> validation.txt
+          done
+          sha256sum audio/*.ogg > manifest.sha256
+          cat validation.txt
+          cat manifest.sha256
+      - name: Package deliverable
+        working-directory: bounty_packages/rustchain_293_weapon_sfx_alt
+        run: |
+          zip -r rustchain_293_weapon_sfx_alt.zip audio generate_sfx.py README.md LICENSE manifest.sha256 validation.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rustchain-293-weapon-sfx-alt
+          path: bounty_packages/rustchain_293_weapon_sfx_alt/rustchain_293_weapon_sfx_alt.zip
+          if-no-files-found: error
+          retention-days: 30
