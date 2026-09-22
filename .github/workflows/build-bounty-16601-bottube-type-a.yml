@@ -1,0 +1,40 @@
+name: Build bounty 16601 BoTTube Type A assets
+
+on:
+  push:
+    branches:
+      - bounty-16601-bottube-agent-api-type-a-20260922
+    paths:
+      - 'distribution_packages/bottube_agent_api_type_a/script.md'
+      - 'distribution_packages/bottube_agent_api_type_a/scripts/build_assets.py'
+      - 'distribution_packages/bottube_agent_api_type_a/thumbnails_src/**'
+      - '.github/workflows/build-bounty-16601-bottube-type-a.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-assets:
+    if: ${{ !contains(github.event.head_commit.message, '[skip asset build]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Install deterministic asset tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y espeak ffmpeg librsvg2-bin
+      - name: Build voiceover and thumbnails
+        run: python distribution_packages/bottube_agent_api_type_a/scripts/build_assets.py
+      - name: Commit generated assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add distribution_packages/bottube_agent_api_type_a/voiceover distribution_packages/bottube_agent_api_type_a/thumbnails distribution_packages/bottube_agent_api_type_a/validation.txt
+          if git diff --cached --quiet; then
+            echo 'No generated changes.'
+          else
+            git commit -m 'Build #16601 Type A assets [skip asset build]'
+            git push origin HEAD:${{ github.ref_name }}
+          fi
