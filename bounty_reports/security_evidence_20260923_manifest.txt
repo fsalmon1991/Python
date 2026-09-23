@@ -1,0 +1,20 @@
+Encrypted evidence bundle for a privately submitted security report.
+
+Chunk order (concatenate exactly in this order):
+1. security_evidence_20260923_part01.b64
+2. security_evidence_20260923_chunk01.b64
+3. security_evidence_20260923_part02.b64
+4. security_evidence_20260923_chunk03.b64
+5. security_evidence_20260923_chunk04.b64
+
+Reconstruction:
+cat security_evidence_20260923_part01.b64 security_evidence_20260923_chunk01.b64 security_evidence_20260923_part02.b64 security_evidence_20260923_chunk03.b64 security_evidence_20260923_chunk04.b64 > security_submission_tiny.b64
+base64 -d security_submission_tiny.b64 > security_submission_tiny.tar.gz.enc
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in security_submission_tiny.tar.gz.enc -out security_submission_tiny.tar.gz -pass pass:<PASSWORD_FROM_PRIVATE_EMAIL>
+tar -xzf security_submission_tiny.tar.gz
+
+Expected SHA-256:
+base64 text: 56bfac842e147440580b59f3430235ed4d0a80b0470e7b0943b63db2996daba7
+encrypted binary: 3621259c75a3bf400687d763301da914dbf7eff61844f0470e18fb2d3c622d28
+
+The decrypted archive contains the report, local Node.js proof of concept, and H.264 proof-of-concept video. The password is intentionally not stored in this public repository.
